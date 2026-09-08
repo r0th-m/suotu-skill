@@ -106,13 +106,14 @@ rg -n -i \
   -e 'org\.apache\.catalina\.filters\.[A-Z][a-z]{6,}' \  # 随机名 Filter(内存马典型)
   -e 'whoami|/bin/(ba)?sh|cmd\.exe|powershell' \         # 命令执行回显(见判定坑!)
   -e 'jndi|ldap://|rmi://|ceye\.io|oast\.(fun|me|live)|dnslog' \  # JNDI/OOB 回连
-  -e 'loginFromDB|admin/admin123' \          # 内置账户爆破痕迹
+  -e 'loginFrom|admin/(admin|admin123|123456)' \       # 内置账户/默认弱口令爆破痕迹
   target.out
 ```
 
 判定要点（全是实战坑）：
-- **`cmd.exe` 类模式先排子串误报**：Java 包名 `*Cmd.execute`（如 AcquireJobsCmd.execute）
-  会贡献百万级假命中——必须先 `rg -c 'Cmd\.execute'` 探一下，再用精确模式
+- **`cmd.exe` 类模式先排子串误报**：Java 业务包名 `*Cmd.execute`
+  （形如 `SomethingCmd.execute` 的任务类）会贡献百万级假命中——必须先
+  `rg -c 'Cmd\.execute'` 探一下，再用精确模式
   （`'cmd\.exe(\s|"|$)'` 或带命令参数的特征）；
 - 随机名 Filter 判定：非 Tomcat 标准 Filter 名 + 首现时间与注入成功事件秒级咬合
   = 高优先候选（Filter 型内存马）；注册动作（addFilterDef）通常不留日志，
