@@ -1,5 +1,11 @@
 # SuoTu Field (索图外勤)
 
+> In one line: teaches your AI assistant (Trae / dsh / Kimi Code, etc.) to
+> investigate your logs like a professional IR analyst — big logs are carved
+> down by CLI tools first, the AI only close-reads the suspicious parts,
+> every finding is a candidate, and the conclusion is always yours.
+> For: security/ops people holding logs and wondering "was I breached?"
+
 An agent skill for log forensics **without the SuoTu platform** — loadable in
 dsh / Trae / Kimi Code and similar agent runtimes.
 
